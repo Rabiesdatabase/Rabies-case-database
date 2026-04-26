@@ -1,226 +1,712 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rabies Case Database</title>
-    <style>
-        /* Styling for the button */
-        .show-button {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Rabies Case Surveillance Database</title>
 
-        .show-button:hover {
-            background-color: #45a049;
-        }
+<style>
 
-        /* Styling for the table - initially hidden */
-        #database-table {
-            display: none;
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
+body{
+font-family:Arial,sans-serif;
+margin:0;
+background:#f6f8ef;
+color:#234;
+}
 
-        #database-table th, #database-table td {
-            padding: 12px;
-            text-align: center;
-            border: 1px solid #ddd;
-            cursor: pointer; /* Change cursor to indicate editability */
-        }
+header{
+background:#2f855a;
+color:white;
+padding:30px;
+text-align:center;
+}
 
-        #database-table th {
-            background-color: #4CAF50;
-            color: white;
-        }
+.container{
+max-width:1400px;
+margin:auto;
+padding:25px;
+}
 
-        #database-table tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
+.card{
+background:#fffdf4;
+padding:25px;
+margin-bottom:30px;
+border-radius:18px;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
 
-        #database-table tr:hover {
-            background-color: #ddd;
-        }
+.section-title{
+background:#dfead0;
+padding:14px;
+border-radius:10px;
+font-size:22px;
+font-weight:bold;
+margin-bottom:20px;
+}
 
-        /* Form styling */
-        .form-container {
-            margin: 20px auto;
-            width: 80%;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:18px;
+}
 
-        .form-container input, .form-container textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
+label{
+font-weight:bold;
+display:block;
+margin-bottom:6px;
+}
 
-        .form-container button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+input,select{
+width:100%;
+padding:11px;
+border-radius:8px;
+border:1px solid #ccc;
+}
 
-        .form-container button:hover {
-            background-color: #45a049;
-        }
-    </style>
+.checkgroup{
+background:#f3f8ea;
+padding:12px;
+border-radius:10px;
+}
+
+.checkgroup label{
+font-weight:normal;
+display:block;
+margin:6px 0;
+}
+
+.buttons{
+margin-top:25px;
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+}
+
+button{
+padding:14px 20px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.addbtn{
+background:#2f855a;
+color:white;
+}
+
+.savebtn{
+background:#d8c89c;
+}
+
+.deletebtn{
+background:#c54d4d;
+color:white;
+padding:8px 14px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+th{
+background:#2f855a;
+color:white;
+padding:12px;
+}
+
+td{
+padding:12px;
+border-bottom:1px solid #ddd;
+vertical-align:top;
+}
+
+tr:nth-child(even){
+background:#f8fbf1;
+}
+
+.tablewrap{
+overflow:auto;
+max-height:600px;
+}
+
+</style>
 </head>
 <body>
-    <div style="width: 80%; margin: 50px auto; background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <h1 style="text-align: center; margin-bottom: 20px;">Rabies Case Database</h1>
-        
-        <!-- Button to show the database -->
-        <button class="show-button" onclick="toggleDatabase()">Show Database</button>
-        
-        <!-- Form to add new case -->
-        <div class="form-container">
-            <h2>Add New Case</h2>
-            <form id="caseForm" onsubmit="addCase(event)">
-                <input type="text" id="patient_id" placeholder="Patient ID" required>
-                <input type="text" id="sex" placeholder="Sex" required>
-                <input type="text" id="age" placeholder="Age" required>
-                <input type="text" id="previous_bite_history" placeholder="Previous Bite History" required>
-                <input type="text" id="source_of_bite" placeholder="Source of Bite" required>
-                <input type="text" id="nature_of_wound" placeholder="Nature of Wound" required>
-                <input type="text" id="bodily_location" placeholder="Bodily Location" required>
-                <input type="text" id="timeline_of_consultation" placeholder="Timeline of Consultation" required>
-                <textarea id="vaccine_doses_completed" placeholder="Vaccine Doses Completed" required></textarea>
-                <textarea id="remarks" placeholder="Remarks" required></textarea>
-                <button type="submit">Add Case</button>
-            </form>
-        </div>
-        
-        <!-- Database Table (Initially Hidden) -->
-        <table id="database-table">
-            <thead>
-                <tr>
-                    <th onclick="sortTable(0)">Patient ID</th>
-                    <th onclick="sortTable(1)">Sex</th>
-                    <th onclick="sortTable(2)">Age</th>
-                    <th onclick="sortTable(3)">Previous Bite History</th>
-                    <th onclick="sortTable(4)">Source of Bite</th>
-                    <th onclick="sortTable(5)">Nature of Wound</th>
-                    <th onclick="sortTable(6)">Bodily Location</th>
-                    <th onclick="sortTable(7)">Timeline of Consultation</th>
-                    <th onclick="sortTable(8)">Vaccine Doses Completed</th>
-                    <th onclick="sortTable(9)">Remarks</th>
-                </tr>
-            </thead>
-            <tbody id="cases-list">
-                <!-- Case rows will be inserted here dynamically -->
-            </tbody>
-        </table>
-    </div>
 
-    <!-- JavaScript to handle showing the database, adding cases, editing cells, and sorting the table -->
-    <script>
-        let casesData = [];
+<header>
+<h1>Rabies Case Surveillance Database</h1>
+</header>
 
-        // Function to toggle the visibility of the database
-        function toggleDatabase() {
-            const table = document.getElementById('database-table');
-            if (table.style.display === 'none') {
-                table.style.display = 'table'; // Show the table
-                setTimeout(() => {
-                    table.style.opacity = 1;
-                    table.style.transform = 'translateY(0)';
-                }, 50); // Fade-in effect + slide from top
-            } else {
-                table.style.opacity = 0;
-                table.style.transform = 'translateY(-20px)';
-                setTimeout(() => table.style.display = 'none', 500); // After fade-out, hide the table
-            }
-        }
 
-        // Function to add a new case to the database
-        function addCase(event) {
-            event.preventDefault(); // Prevent form submission
+<div class="container">
 
-            // Collect form data
-            const newCase = {
-                patient_id: document.getElementById('patient_id').value,
-                sex: document.getElementById('sex').value,
-                age: document.getElementById('age').value,
-                previous_bite_history: document.getElementById('previous_bite_history').value,
-                source_of_bite: document.getElementById('source_of_bite').value,
-                nature_of_wound: document.getElementById('nature_of_wound').value,
-                bodily_location: document.getElementById('bodily_location').value,
-                timeline_of_consultation: document.getElementById('timeline_of_consultation').value,
-                vaccine_doses_completed: document.getElementById('vaccine_doses_completed').value,
-                remarks: document.getElementById('remarks').value,
-            };
+<div class="card">
+<div class="section-title">
+Patients Information
+</div>
 
-            // Add the new case to the array
-            casesData.push(newCase);
+<div class="grid">
 
-            // Update the table with the new case
-            updateTable();
+<div>
+<label>Name</label>
+<input id="patientName">
+</div>
 
-            // Clear the form inputs
-            document.getElementById('caseForm').reset();
-        }
+<div>
+<label>Sex</label>
+<select id="sex">
+<option>Male</option>
+<option>Female</option>
+</select>
+</div>
 
-        // Function to update the table with new data
-        function updateTable() {
-            const tableBody = document.getElementById('cases-list');
-            tableBody.innerHTML = ''; // Clear the current table rows
+<div>
+<label>Age</label>
+<input type="number" id="age">
+</div>
 
-            casesData.forEach((caseData, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td contenteditable="true" onblur="updateCase(${index}, 'patient_id', this.innerText)">${caseData.patient_id}</td>
-                    <td contenteditable="true" onblur="updateCase(${index}, 'sex', this.innerText)">${caseData.sex}</td>
-                    <td contenteditable="true" onblur="updateCase(${index}, 'age', this.innerText)">${caseData.age}</td>
-                    <td contenteditable="true" onblur="updateCase(${index}, 'previous_bite_history', this.innerText)">${caseData.previous_bite_history}</td>
-                    <td contenteditable="true" onblur="updateCase(${index}, 'source_of_bite', this.innerText)">${caseData.source_of_bite}</td>
-                    <td contenteditable="true" onblur="updateCase(${index}, 'nature_of_wound', this.innerText)">${caseData.nature_of_wound}</td>
-                    <td contenteditable="true" onblur="updateCase(${index}, 'bodily_location', this.innerText)">${caseData.bodily_location}</td>
-                    <td contenteditable="true" onblur="updateCase(${index}, 'timeline_of_consultation', this.innerText)">${caseData.timeline_of_consultation}</td>
-                    <td contenteditable="true" onblur="updateCase(${index}, 'vaccine_doses_completed', this.innerText)">${caseData.vaccine_doses_completed}</td>
-                    <td contenteditable="true" onblur="updateCase(${index}, 'remarks', this.innerText)">${caseData.remarks}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
+<div>
+<label>Socioeconomic Status</label>
+<select id="income">
+<option>High income</option>
+<option>Middle income</option>
+<option>Low income</option>
+</select>
+</div>
 
-        // Function to update the case data when a cell is edited
-        function updateCase(index, field, newValue) {
-            casesData[index][field] = newValue;
-        }
+<div style="grid-column:span 2;">
+<label>Address</label>
+<input id="address">
+</div>
 
-        // Function to sort the table by column index
-        function sortTable(columnIndex) {
-            const rows = Array.from(document.getElementById('cases-list').rows);
-            const sortedRows = rows.sort((a, b) => {
-                const aText = a.cells[columnIndex].textContent.trim();
-                const bText = b.cells[columnIndex].textContent.trim();
+</div>
+</div>
 
-                return aText > bText ? 1 : (aText < bText ? -1 : 0);
-            });
 
-            // Append the sorted rows back to the table body
-            sortedRows.forEach(row => document.getElementById('cases-list').appendChild(row));
-        }
-    </script>
+
+<div class="card">
+<div class="section-title">
+Animal Bite Information
+</div>
+
+<div class="grid">
+
+<div>
+<label>Previous Anti-rabies Vaccination</label>
+<select id="prevVac">
+<option>None</option>
+<option>Incomplete</option>
+<option>Complete</option>
+</select>
+</div>
+
+<div>
+<label>If complete state date/year</label>
+<input id="completeDate">
+</div>
+
+<div>
+<label>Source of Bite</label>
+<input id="biteSource">
+</div>
+
+<div>
+<label>Type of Ownership</label>
+<select id="ownership">
+<option>Pet</option>
+<option>Stray</option>
+<option>Wild</option>
+</select>
+</div>
+
+<div>
+<label>Type of Wound</label>
+<input id="woundType">
+</div>
+
+<div>
+<label>Wound Location</label>
+<input id="woundLocation">
+</div>
+
+<div>
+<label>Type of Bleeding</label>
+<input id="bleeding">
+</div>
+
+<div>
+<label>Wound Care</label>
+<select id="woundCare">
+<option>Done</option>
+<option>Not done</option>
+</select>
+</div>
+
+<div>
+<label>Status of Biting Animal</label>
+
+<div class="checkgroup">
+<label><input type="checkbox" value="Alive"> Alive</label>
+<label><input type="checkbox" value="Died"> Died</label>
+<label><input type="checkbox" value="Vaccinated"> Vaccinated</label>
+<label><input type="checkbox" value="Unvaccinated"> Unvaccinated</label>
+</div>
+
+</div>
+
+<div>
+<label>Consultation Time</label>
+<select id="consult">
+<option>Within 24 hrs</option>
+<option>Within 1 week</option>
+<option>After 1 month-year</option>
+<option>More than a year</option>
+</select>
+</div>
+
+<div>
+<label>1st Dose</label>
+<input type="date" id="dose1">
+</div>
+
+<div>
+<label>2nd Dose</label>
+<input type="date" id="dose2">
+</div>
+
+<div>
+<label>3rd Dose</label>
+<input type="date" id="dose3">
+</div>
+
+<div>
+<label>Booster</label>
+<input type="date" id="booster">
+</div>
+
+</div>
+
+<div class="buttons">
+<button type="button"
+class="addbtn"
+onclick="addCase()">
+Add Case
+</button>
+
+<button type="button"
+class="savebtn"
+onclick="downloadBackup()">
+Save Monthly File
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card">
+<div class="section-title">
+Case Database
+</div>
+
+<div class="tablewrap">
+<table>
+<thead>
+
+<tr>
+<th>Patient</th>
+<th>Bite Details</th>
+<th>Animal Status</th>
+<th>Vaccine Schedule</th>
+<th>Delete</th>
+</tr>
+
+</thead>
+
+<tbody id="dbBody"></tbody>
+
+</table>
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+let cases=
+JSON.parse(localStorage.getItem("rabiesDB")) || [];
+
+
+function saveCases(){
+localStorage.setItem(
+"rabiesDB",
+JSON.stringify(cases)
+);
+}
+
+
+function getAnimalStatus(){
+
+let checked=
+document.querySelectorAll(
+".checkgroup input:checked"
+);
+
+let arr=[];
+
+checked.forEach(c=>{
+arr.push(c.value);
+});
+
+return arr.join(", ");
+}
+
+
+
+function clearForm(){
+
+document.querySelectorAll(
+"input"
+).forEach(x=>{
+
+if(x.type!="checkbox"){
+x.value="";
+}
+
+});
+
+document.querySelectorAll(
+"input[type='checkbox']"
+).forEach(c=>{
+c.checked=false;
+});
+
+document.getElementById("sex").selectedIndex=0;
+document.getElementById("income").selectedIndex=0;
+document.getElementById("prevVac").selectedIndex=0;
+document.getElementById("ownership").selectedIndex=0;
+document.getElementById("woundCare").selectedIndex=0;
+document.getElementById("consult").selectedIndex=0;
+
+}
+
+
+
+function addCase(){
+
+let pname=
+document.getElementById(
+"patientName"
+).value.trim();
+
+if(pname===""){
+alert("Enter patient name.");
+return;
+}
+
+let record={
+
+id:Date.now(),
+
+name:pname,
+
+sex:
+document.getElementById(
+"sex").value,
+
+age:
+document.getElementById(
+"age").value,
+
+income:
+document.getElementById(
+"income").value,
+
+address:
+document.getElementById(
+"address").value,
+
+prevVac:
+document.getElementById(
+"prevVac").value,
+
+completeDate:
+document.getElementById(
+"completeDate").value,
+
+biteSource:
+document.getElementById(
+"biteSource").value,
+
+ownership:
+document.getElementById(
+"ownership").value,
+
+woundType:
+document.getElementById(
+"woundType").value,
+
+woundLocation:
+document.getElementById(
+"woundLocation").value,
+
+bleeding:
+document.getElementById(
+"bleeding").value,
+
+woundCare:
+document.getElementById(
+"woundCare").value,
+
+animalStatus:
+getAnimalStatus(),
+
+consult:
+document.getElementById(
+"consult").value,
+
+dose1:
+document.getElementById(
+"dose1").value,
+
+dose2:
+document.getElementById(
+"dose2").value,
+
+dose3:
+document.getElementById(
+"dose3").value,
+
+booster:
+document.getElementById(
+"booster").value
+
+};
+
+
+cases.push(record);
+
+saveCases();
+
+renderDatabase();
+
+clearForm();
+
+alert("Case added successfully.");
+
+}
+
+
+
+function deleteCase(id){
+
+if(confirm("Delete this case?")){
+
+cases=
+cases.filter(
+x=>x.id!==id
+);
+
+saveCases();
+
+renderDatabase();
+
+}
+
+}
+
+
+
+function renderDatabase(){
+
+let html="";
+
+cases.forEach(c=>{
+
+html+=`
+
+<tr>
+
+<td>
+<b>${c.name}</b><br>
+${c.sex}<br>
+Age: ${c.age}<br>
+${c.income}<br>
+${c.address}
+</td>
+
+<td>
+Source: ${c.biteSource}<br>
+Ownership: ${c.ownership}<br>
+Wound: ${c.woundType}<br>
+Location: ${c.woundLocation}<br>
+Bleeding: ${c.bleeding}<br>
+Care: ${c.woundCare}<br>
+Previous Vaccine: ${c.prevVac}
+</td>
+
+<td>
+${c.animalStatus}<br><br>
+${c.consult}
+</td>
+
+<td>
+<b>1st Dose</b><br>
+
+<input class='editbox'
+
+type='date'
+
+value='${c.dose1||""}'
+
+onchange='updateField(${c.id},"dose1",this.value)'>
+
+
+<select class='smallselect'
+
+onchange='updateField(${c.id},"dose1Remark",this.value)'>
+
+<option ${c.dose1Remark==='Given'?'selected':''}>Given</option>
+
+<option ${c.dose1Remark==='Not Given'?'selected':''}>Not Given</option>
+
+</select>
+
+<hr>
+
+<b>2nd Dose</b><br>
+
+<input class='editbox'
+
+type='date'
+
+value='${c.dose2||""}'
+
+onchange='updateField(${c.id},"dose2",this.value)'>
+
+<select class='smallselect'
+
+onchange='updateField(${c.id},"dose2Remark",this.value)'>
+
+<option ${c.dose2Remark==='Given'?'selected':''}>Given</option>
+
+<option ${c.dose2Remark==='Not Given'?'selected':''}>Not Given</option>
+
+</select>
+
+<hr>
+
+<b>3rd Dose</b><br>
+
+<input class='editbox'
+
+type='date'
+
+value='${c.dose3||""}'
+
+onchange='updateField(${c.id},"dose3",this.value)'>
+
+<select class='smallselect'
+
+onchange='updateField(${c.id},"dose3Remark",this.value)'>
+
+<option ${c.dose3Remark==='Given'?'selected':''}>Given</option>
+
+<option ${c.dose3Remark==='Not Given'?'selected':''}>Not Given</option>
+
+</select>
+
+<hr>
+
+<b>Booster</b><br>
+
+<input class='editbox'
+
+type='date'
+
+value='${c.booster||""}'
+
+onchange='updateField(${c.id},"booster",this.value)'>
+
+
+<br><br>
+
+Compliance:
+
+<select class='smallselect'
+
+onchange='updateField(${c.id},"compliance",this.value)'>
+
+<option ${c.compliance==='Compliant'?'selected':''}>Compliant</option>
+
+<option ${c.compliance==='Non-Compliant'?'selected':''}>Non-Compliant</option>
+
+</select>
+
+</td>
+
+<td>
+<button
+class="deletebtn"
+onclick="deleteCase(${c.id})">
+Delete
+</button>
+</td>
+
+</tr>
+
+`;
+
+});
+
+document.getElementById(
+"dbBody"
+).innerHTML=html;
+
+}
+
+
+
+function downloadBackup(){
+
+let blob=
+new Blob(
+[JSON.stringify(cases,null,2)],
+{type:"application/json"}
+);
+
+let a=
+document.createElement("a");
+
+let month=
+new Date().toLocaleString(
+'default',
+{month:'long'}
+);
+
+let year=
+new Date().getFullYear();
+
+a.href=
+URL.createObjectURL(blob);
+
+a.download=
+"Rabies_Backup_"+month+"_"+year+".json";
+
+a.click();
+
+}
+
+
+
+renderDatabase();
+
+</script>
+
 </body>
 </html>
